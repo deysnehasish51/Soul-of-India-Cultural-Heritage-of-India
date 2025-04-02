@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Telling</title>
+    <link rel="stylesheet" href="../assets/css/story.css">
+    <style>
+          .row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      flex: 0 0 48%; /* Adjust the width as needed */
+      border: 1px solid #ddd;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+    }
+  </style>  
+      </style>
+</head>
+<body>
+    <section class="part1">
+        <div class="text-box">
+          <h1>Heritage Chronicles</h1>
+          <p>Tales Beyond Time</p>
+      </section>
+  
+      
+    <section class="part2">
+        <div class="row">
+            <div class="card">
+             <a href="/mahabharat"> <img src="../mahabharat.jpeg" alt="Card 1"></a>
+            </div>
+            
+            <div class="card">
+              <img src="../ramayana2.jpeg" alt="Card 2">
+            </div>
+          </div>
+      
+          <!-- Add more rows as needed -->
+          <div class="row">
+            <div class="card">
+              <img src="../siii.jpeg" alt="Card 3">
+            </div>
+            
+            <div class="card">
+              <img src="../sita.jpeg" alt="Card 4">
+            </div>
+          </div>
+
+
+
+    </section>
+
+      <script src="./story.js"></script>
+      <script>
+        function flipCard(card) {
+            card.querySelector('.card-inner').style.transform = 'rotateY(180deg)';
+        }
+      </script>
+</body>
+</html>

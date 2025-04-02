@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul of India</title>
+  <link rel="shortcut icon" href="favicon.png">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Adamina&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/7aa1c87325.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <!-- <a class="navbar-brand" href="#">Soul of India</a> -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="/login"><b>Login</b></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/"><b>Home</b></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/gallery"><b>Gallery</b></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/dance"><b>Dance</b></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/music"><b>Music</b></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/index"><b>Cuisine</b></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/folklores"><b>Folklores</b></a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Video Section -->
+    <div class="video-container">
+        <video id="background-video" autoplay loop muted loading="lazy">
+            <source src="bgdarker.mp4" type="video/mp4">
+        </video>
+        <div class="header-container">
+            <h1 class="header">Soul <span class="highlight">of</span> India</h1>
+            <p class="tagline">A Digital Odyssey of India's Diverse Heritage and Culture</p>
+        </div>
+    </div>
+   
+    <!-- Section 2 -->
+    <div class="section2">
+        <img src="../assets/img/banner.png" alt="" class="banner">
+        <div class="container1">
+            <a href="/story"><img src="/assets/img/story.png" alt="" class="img2"></a>
+            <a href="/index"><img src="../assets/img/ac.png" alt="" class="img2"></a>
+            <a href="/music"><img src="../assets/img/md.png" alt="" class="img2"></a>
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section3">
+        <div class="container">
+            <a href="/games"><img src="/assets/img/play.png" alt="Image 1" class="s3"></a>
+            <a href="/e-commerce"><img src="/assets/img/art.png" alt="Image 3" class="s3"></a>
+            <a href="/calendar"><img src="/assets/img/cal.png" alt="Image 4" class="s3"></a>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container-contact">
+          <!-- Left Section: Contact Form -->
+          <div class="contact-form">
+            <h1>Get in touch</h1>
+            <p>We are here for you! How can we help?</p>
+            <form action="mailto:soulofindia@gmail.com" enctype="text/plain">
+              <div class="form-group">
+                <label for="name">Your name</label>
+                <input type="text" id="name" class="input" placeholder="Please enter your name" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="input" placeholder="Please enter your email" name="email" pattern=".+@gmail\.com" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" class="input" placeholder="Please enter your phone number" name="phone">
+              </div>
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <select id="subject" class="input" name="subject">
+                  <option value="general">General Inquiry</option>
+                  <option value="support">Support Request</option>
+                  <option value="feedback">Feedback</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" class="input" placeholder="Enter your message here" name="message"></textarea>
+              </div>
+              <button type="submit" class="btn">Send <i class="uil uil-message"></i></button>
+            </form>
+          </div>
+          <!-- Right Section: Resources -->
+          <div class="resources">
+            <h2>Explore Our Culture and Heritage</h2>
+            <div class="resource-card">
+              <img src="/assets/img/con-icon2.png" alt="Traditional Art icon">
+              <div>
+                <h3>Discover Traditional Art</h3>
+                <p>Learn about our rich heritage of paintings, sculptures, and crafts that tell stories of our past.</p>
+              </div>
+            </div>
+            <div class="resource-card">
+              <img src="/assets/img/con-icon1.png" alt="Heritage Sites icon">
+              <div>
+                <h3>Visit Heritage Sites</h3>
+                <p>Explore iconic landmarks and historical sites that showcase the grandeur of our culture.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+        <script type="text/javascript">
+            (function(d, t) {
+                var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+                v.onload = function() {
+                  window.voiceflow.chat.load({
+                    verify: { projectID: '65446613ac239a0007e61810' },
+                    url: 'https://general-runtime.voiceflow.com',
+                    versionID: 'production'
+                  });
+                }
+                v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+            })(document, 'script');
+          </script>
+        <script src="../assets/js/map.js"></script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="box-container">
+            <div class="box">
+                <h3>Quick Links</h3>
+                <a href="/">Home</a>
+                <a href="/dance">Dance</a>
+                <a href="/music">Music</a>
+                <a href="/explore">Cuisine</a>
+            </div>
+            <div class="box">
+                <h3>Official Links</h3>
+                <a href="https://www.indiaculture.gov.in/">Ministry of Culture</a>
+                <a href="https://www.sangeetnatak.gov.in/">Sangeet Natak Akademi</a>
+                <a href="https://sahitya-akademi.gov.in/">Sahitya Akademi</a>
+            </div>
+            <div class="box">
+                <h3>Contact Info</h3>
+                <a href="tel:+917205132521"> <i class="fas fa-phone"></i> +91 7205132521 </a>
+                <a href="mailto:soulofindia@gmail.com"> <i class="fas fa-envelope"></i> soulofindia@gmail.com </a>
+                <a href="#"> <i class="fas fa-map"></i> Punjab, India - 144411 </a>
+            </div>
+        </div>
+        <div class="credit">Created by Snehasish, Sujit & Adesh with <i class="fa-solid fa-heart"></i> | All Rights Reserved</div>
+    </footer>
+</body>
+</html>

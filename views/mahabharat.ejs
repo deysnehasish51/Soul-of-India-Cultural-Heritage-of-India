@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Story</title>
+    <style> 
+          h1 {
+            color: brown;
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 50px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 5pxx;
+            background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUpH3BKhaDfSM_BH9hILqUTWzMAbNzJG99_g&usqp=CAU");
+            background-repeat: no-repeat;
+            background-size: cover;
+            overflow: scroll;
+        }
+
+
+        #story {
+            max-width: 600px;
+            margin: auto;
+            line-height: 1.5;
+            margin-top: 25%;
+        }
+
+        #playButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+        p{
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>MAHABHARAT</h1>
+    <div class="section">
+    <div id="story">
+        <button id="playButton" onclick="readStory()">Listen</button>
+       <p>The Mahabharata, an ancient Indian epic attributed to the sage Vyasa, recounts the tumultuous tale of the Kauravas and Pandavas. Fueled by jealousy and rivalry, the story unfolds through a game of dice that leads to the Pandavas' exile. The great Kurukshetra War ensues, where legendary figures engage in battle, culminating in the victory of the Pandavas. Amidst the epic, the Bhagavad Gita imparts profound philosophical teachings. Post-war, Yudhishthira becomes king, yet haunted by moral dilemmas, he eventually renounces the throne, marking the end of this sweeping narrative rich in myth, morality, and spirituality.</p>
+    </div>
+
+    
+</div>
+    <script>
+        function readStory() {
+            var storyText = document.getElementById('story').innerText;
+
+            var speech = new SpeechSynthesisUtterance();
+            speech.text = storyText;
+
+            // Optional: Set the voice
+            // speech.voice = speechSynthesis.getVoices().find(voice => voice.name === 'your-preferred-voice');
+
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+</body>
+</html>

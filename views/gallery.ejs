@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="../assets/css/gallery.css">
+        
+        <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <title>Dance| Soul of India</title>
+    </head> 
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+        <!-- <a class="navbar-brand" href="#">Soul of India</a> -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/login"><b>Login</b></a></li>
+                <li class="nav-item"><a class="nav-link" href="/"><b>Home</b></a></li>
+                <li class="nav-item"><a class="nav-link" href="/gallery"><b>Gallery</b></a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="/dance"><b>Dance</b></a></li> -->
+                <li class="nav-item"><a class="nav-link" href="/music"><b>Music</b></a></li>
+                <li class="nav-item"><a class="nav-link" href="/index"><b>Cuisine</b></a></li>
+                <li class="nav-item"><a class="nav-link" href="/folklores"><b>Folklores</b></a></li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+    <!-- carousel -->
+    <div class="carousel">
+        <!-- list item -->
+        <div class="list">
+            <% galleryData.forEach(item => { %>
+            <div class="item" style="background-image: url('<%= item.image %>')">
+                <div class="content">
+                    <div class="title"><%= item.title %></div>
+                    <div class="name"><%= item.topic %></div>
+                    <div class="des"><%= item.des %></div>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+
+        <!-- list thumbnail
+        <div class="thumbnail">
+            <% galleryData.forEach(item => { %>
+            <div class="item">
+                <img src="<%= item.image %>" alt="<%= item.name %>">
+            </div>
+            <% }); %>
+        </div> -->
+
+        <!-- next prev -->
+        <div class="arrows">
+            <button class="prev"><</button>
+            <button class="next">></button>
+        </div>
+
+        <div class="timeRunning"></div>
+        <script>
+            var nextBtn = document.querySelector('.next'),
+            prevBtn = document.querySelector('.prev'),
+            carousel = document.querySelector('.carousel'),
+            list = document.querySelector('.list'), 
+            item = document.querySelectorAll('.item'),
+            runningTime = document.querySelector('.carousel .timeRunning') 
+        
+        let timeRunning = 3000 
+        let timeAutoNext = 7000
+        
+        nextBtn.onclick = function(){
+            showSlider('next')
+        }
+        
+        prevBtn.onclick = function(){
+            showSlider('prev')
+        }
+        
+        let runTimeOut 
+        
+        let runNextAuto = setTimeout(() => {
+            nextBtn.click()
+        }, timeAutoNext)
+        
+        
+        function resetTimeAnimation() {
+            runningTime.style.animation = 'none'
+            runningTime.offsetHeight /* trigger reflow */
+            runningTime.style.animation = null 
+            runningTime.style.animation = 'runningTime 7s linear 1 forwards'
+        }
+        
+        
+        function showSlider(type) {
+            let sliderItemsDom = list.querySelectorAll('.carousel .list .item')
+            if(type === 'next'){
+                list.appendChild(sliderItemsDom[0])
+                carousel.classList.add('next')
+            } else{
+                list.prepend(sliderItemsDom[sliderItemsDom.length - 1])
+                carousel.classList.add('prev')
+            }
+        
+            clearTimeout(runTimeOut)
+        
+            runTimeOut = setTimeout( () => {
+                carousel.classList.remove('next')
+                carousel.classList.remove('prev')
+            }, timeRunning)
+        
+        
+            clearTimeout(runNextAuto)
+            runNextAuto = setTimeout(() => {
+                nextBtn.click()
+            }, timeAutoNext)
+        
+            resetTimeAnimation() // Reset the running time animation
+        }
+        
+        // Start the initial animation 
+        resetTimeAnimation()
+</script>
+
+    </div>
+</body>
+</html>
