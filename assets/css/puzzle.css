@@ -2,10 +2,8 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     color: #0c67ae;
-    text-align: center;
     align-items: center;
     justify-content: center;
-    /* margin-top: 200px; */
     background-color: #001861;
 }
 
@@ -22,7 +20,6 @@ body {
     border: 10px solid #0c67ae;
     align-items: center;
     justify-content: center;
-
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -35,4 +32,46 @@ body {
     width: 118px;
     height: 118px;
     border: 1px solid #0c67ae;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    #title {
+        width: 300px;
+        height: 120px;
+    }
+
+    #board {
+        width: 80%;
+        height: 80%;
+        margin-top: 50px;
+    }
+
+    #board img {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        text-align: center;
+        padding: 10px;
+    }
+
+    #title {
+        width: 250px;
+        height: 100px;
+    }
+
+    #board {
+        width: 90%;
+        height: 90%;
+        margin-top: 30px;
+    }
+
+    #board img {
+        width: 80px;
+        height: 80px;
+    }
 }

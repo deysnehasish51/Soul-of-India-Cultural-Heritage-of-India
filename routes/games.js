@@ -9,8 +9,8 @@ router.get("/puzzle", (req,res) => {
 	res.render("puzzle");
 });
 
-router.get("/crossword", (req,res) => {
-	res.render("crossword");
+router.get("/quiz", (req,res) => {
+	res.render("quiz");
 });
 
 module.exports = router;	

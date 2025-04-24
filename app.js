@@ -3,6 +3,15 @@ const app = express();
 const path = require('path');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
+const fs = require('fs');
+const helmet = require('helmet');
+const crypto = require('crypto');
+const { GridFsBucket } = require('mongodb');
+const { MongoClient } = require('mongodb'); // Import MongoClient for GridFS
+const { GridFsStorage } = require('multer-gridfs-storage'); // Import GridFsStorage for file uploads
+const { GridFSBucket } = require('mongodb'); // Import GridFSBucket for file streaming
+const cors = require('cors');
+const multer = require('multer');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -16,29 +25,22 @@ const danceRoutes = require('./routes/dance.js');
 const musicRoutes = require('./routes/music.js');
 const storyRoutes = require('./routes/story.js');
 const gamesRoutes = require('./routes/games.js');
-const gameRoutes = require('./routes/game.js');
 const ecommRoutes = require('./routes/ecommerce.js');
 const galleryRouter = require('./routes/gallery');
+const heritageRoutes = require("./routes/heritage");
 const bcrypt = require('bcrypt');
 const middleware = require('./middleware/middleware.js');
 const User = require('./models/user.js');
-const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const authController = require("./controller/authController");
+
+const uploadRoutes = require('./routes/upload');
+app.use('/api', uploadRoutes);
+app.use('/uploads', express.static('uploads'));
 
 require('dotenv').config();
 require('./config/dbConnection.js');
 require('./config/passport.js')(passport);
-
-// MongoDB Connection
-mongoose
-  .connect('mongodb://localhost:27017/cultureHeritage', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch((err) => console.error('MongoDB connection error:', err));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -55,6 +57,8 @@ app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(__dirname));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 // Flash Messages Middleware
 app.use((req, res, next) => {
@@ -64,8 +68,133 @@ app.use((req, res, next) => {
   next();
 });
 
+// MongoDB Connection Setup
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/cultureHeritage';
+
+// Connect to MongoDB
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const conn = mongoose.connection;
+
+// Initialize GridFSBucket
+let gfs;
+let gridFSBucket;
+
+conn.once('open', () => {
+  console.log('✅ Connected to MongoDB');
+  gridFSBucket = new GridFSBucket(conn.db, {
+    bucketName: 'uploads',
+  });
+  gfs = gridFSBucket;
+});
+
+// Configure Storage Engine for multer-gridfs-storage
+const storage = new GridFsStorage({
+  url: mongoURI,
+  options: { useUnifiedTopology: true },
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads', // Collection name
+        };
+        resolve(fileInfo);
+      });
+    });
+  },
+});
+const upload = multer({ storage });
+
+// Upload Schema for Metadata
+const UploadSchema = new mongoose.Schema({
+  filename: String,
+  description: String,
+  stateName: String, // Added field for state name
+  uploadDate: {
+    type: Date,
+    default: Date.now,
+  },
+});
+const Upload = mongoose.model('Upload', UploadSchema);
+
+// Routes
+app.get('/upload', (req, res) => {
+  res.render('upload'); // Render the upload.ejs file
+});
+
+app.post('/api/upload', upload.single('file'), async (req, res) => {
+  try {
+    const { description, stateName } = req.body;
+
+    if (!req.file || !description || !stateName) {
+      return res.status(400).json({ message: 'File, description, and state name are required.' });
+    }
+
+    // Save metadata to MongoDB
+    const newUpload = new Upload({
+      filename: req.file.filename,
+      description: description,
+      stateName: stateName, // Store the state name
+    });
+
+    await newUpload.save();
+
+    res.status(200).json({
+      message: 'File uploaded successfully to the database',
+      file: req.file.filename,
+      description: description,
+      stateName: stateName,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Fetch File by Filename
+app.get('/api/file/:filename', async (req, res) => {
+  try {
+    const file = await gfs.find({ filename: req.params.filename }).toArray();
+
+    if (!file || file.length === 0) {
+      return res.status(404).json({ message: 'File not found' });
+    }
+
+    gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete File by Filename
+app.delete('/api/file/:filename', async (req, res) => {
+  try {
+    const file = await gfs.find({ filename: req.params.filename }).toArray();
+
+    if (!file || file.length === 0) {
+      return res.status(404).json({ message: 'File not found' });
+    }
+
+    await gfs.delete(file[0]._id);
+    res.status(200).json({ message: 'File deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Serve static files
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads')); // Serve uploaded files
 
 // Routes
 app.use(mapRoutes);
@@ -74,10 +203,12 @@ app.use(danceRoutes);
 app.use(musicRoutes);
 app.use(storyRoutes);
 app.use(gamesRoutes);
-app.use(gameRoutes);
 app.use(ecommRoutes);
+app.use("/", heritageRoutes);
+app.use(helmet());
 app.use('/auth', authRoutes); // Ensure correct route registration
 app.use('/', galleryRouter);
+app.use(cors());
 
 // Forgot Password Route
 app.post('/auth/forgot-password', async (req, res) => {
@@ -182,45 +313,12 @@ app.post(
   '/auth/login',
   passport.authenticate('local', {
     failureRedirect: '/auth/login',
-    failureFlash: 'Invalid username or password.',
+    failureFlash: true,
   }),
   (req, res) => {
-    res.redirect('/map');
+    res.redirect('/');
   }
 );
-
-app.post('/auth/signup', async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
-
-  try {
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      req.flash('error', 'Email is already registered.');
-      return res.redirect('/auth/signup');
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-    });
-
-    await user.save();
-    req.flash('success', 'Signup successful! Please log in.');
-    res.redirect('/auth/login');
-  } catch (err) {
-    console.error(err);
-    req.flash('error', 'Something went wrong. Please try again.');
-    res.redirect('/auth/signup');
-  }
-});
-
-// Forgot Password Check Route
-app.get('/auth/forgot-password', (req, res) => {
-  res.send('Forgot password route is working!');
-});
 
 //Folklores Routes
 app.get('/folklores', (req, res) => {

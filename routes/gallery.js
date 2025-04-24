@@ -8,7 +8,6 @@ router.get('/gallery', (req, res) => {
         {
             image: "assets/img/places/lepakshi.webp",
             title: "Lepakshi Monuments",
-            
             topic: "Andhra Pradesh",
             des: "This site is celebrated for its magnificent Vijayanagara-style architecture. The Veerabhadra Temple, dedicated to Lord Shiva, features stunning frescoes and intricate carvings that depict scenes from Hindu mythology. Lepakshi is also known for its colossal Nandi statue, which is one of the largest monolithic sculptures in India."
         },

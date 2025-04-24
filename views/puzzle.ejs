@@ -1,18 +1,82 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Slide Puzzle</title>
-        <link rel="stylesheet" href="../assets/css/puzzle.css">
-        
-    </head>
-
-    <body>
-       
-        <div id="board">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Image Puzzle Game</title>
+  <link rel="shortcut icon" href="favicon.png">
+    <link href="/assets/css/style.css" rel="stylesheet" />
+    <link href="/assets/css/image-puzzle.css" rel="stylesheet" />
+    <script src="/assets/js/jquery-2.1.1.min.js"></script>
+    <script src="/assets/js/jquery-ui.js"></script>
+    <script src="/assets/js/image-puzzle.js"></script>
+</head>
+<body>
+    <div id="collage">
+        <h2>Image Puzzle Game</h2>
+        <hr />
+        <div id="playPanel" style="padding:5px;display:none;">
+            <h3 id="imgTitle"></h3> <hr />
+            <div style="display:inline-block; margin:auto; width:95%; vertical-align:top;">
+                <ul id="sortable" class="sortable"></ul>
+                <div id="actualImageBox">
+                    <div id="stepBox">
+                        <div>Count:</div><div class="stepCount">0</div>
+                    </div>
+                    <div id="timeBox">
+                        Time: <span id="timerPanel"></span> seconds
+                    </div>
+                    <img id="actualImage" />
+                    <div>Solve the puzzle.</div>
+                    <p id="levelPanel">
+                        <input type="radio" name="level" id="easy" checked="checked" value="3" /> <label for="easy">Easy</label>
+                        <input type="radio" name="level" id="medium" value="4" /> <label for="medium">Medium</label>
+                        <input type="radio" name="level" id="hard" value="5" /> <label for="hard">Hard</label>
+						<input type="radio" name="level" id="veryhard" value="6" /> <label for="veryhard">Very Hard</label>
+                    </p>
+                    <div>
+                        <button id="newPhoto" type="button" class="btn">Next</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h1>Turns: <span id="turns">0</span></h1>
-    </body>
-    <script src="../assets/js/puzzle.js"></script>
+        <div id="gameOver" style="display:none;">
+            <div style="background-color: #EADDCA; padding: 5px 10px 20px 10px; text-align: center; ">
+                <h2 style="text-align:center">You win!</h2>
+                Congratulations!! <br />
+                <br />
+                Time: <span class="stepCount">0</span> gear.
+                <br />
+                Time spent: <span class="timeCount">0</span> seconds<br />
+                <div>
+                    <button type="button" onclick="window.location.reload(true);">Play more</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var images = [
+                { src: '/assets/img/taj-mahal.jpg', title: 'Taj Mahal, Uttar Pradesh'},
+                { src: '/assets/img/hawa-mahal.jpg', title: 'Hawa Mahal, Rajasthan' },
+                { src: '/assets/img/sundarban.jpg', title: 'Sundarban National Park, West Bengal' },
+                { src: '/assets/img/redfort.jpg', title: 'Red Fort, Delhi' },
+				{ src: '/assets/img/hampi.jpg', title: 'Hampi Group of Monnuments, Karnataka' },
+                { src: '/assets/img/nandadevi.jpg', title: 'Nandadevi & Valley of Flower, Utarakhand' }
+            ];
+
+            $(function () {
+                var gridSize = $('#levelPanel :radio:checked').val();
+                imagePuzzle.startGame(images, gridSize);
+                $('#newPhoto').click(function () {
+                    var gridSize = $('#levelPanel :radio:checked').val();
+                    imagePuzzle.startGame(images, gridSize);
+                });
+
+                $('#levelPanel :radio').change(function (e) {
+                    var gridSize = $(this).val();
+                    imagePuzzle.startGame(images, gridSize);
+                });
+            });
+         
+        </script>
+    </div>
+</body>
 </html>

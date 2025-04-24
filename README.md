@@ -1,4 +1,4 @@
-# EKTA
+Soul of India
 A digital Odessey of India's diverse heritage and culture.
 
 ## The Idea

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stylish Image Upload UI</title>
+  <link rel="shortcut icon" href="favicon.png">
+  <link rel="stylesheet" href="/assets/css/upload.css">
+</head>
+<body>
+  <div class="upload-container">
+    <div class="upload-box">
+      <h2>Upload Image</h2>
+      <p>CULTURAL HERITAGE</p>
+
+      <div class="upload-area" id="upload-area">
+        <input type="file" id="file-input" hidden>
+        <label for="file-input" class="upload-label">
+          <div class="upload-icon">📤</div>
+          <span id="upload-text">Click to upload or drag & drop</span>
+        </label>
+        <p class="file-info">Max. File Size: 15MB</p>
+      </div>
+
+      <input type="text" id="state-name" placeholder="Enter State Name" class="state-name-box" />
+
+      <textarea id="description" placeholder="Write a description..." class="description-box" rows="5" cols="30"></textarea>
+
+      <div class="buttons">
+        <button class="cancel-btn">Cancel</button>
+        <button class="upload-btn">Upload</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const MAX_SIZE_MB = 15;
+    const fileInput = document.getElementById('file-input');
+    const description = document.getElementById('description');
+    const stateNameInput = document.getElementById('state-name');
+    const uploadText = document.getElementById('upload-text');
+
+    fileInput.addEventListener('change', function(event){
+      const file = event.target.files[0];
+      if (file) {
+        if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+          alert("File size exceeds 15MB limit.");
+          fileInput.value = "";
+          return;
+        }
+        uploadText.textContent = file.name;
+      }
+    });
+
+    document.querySelector('.upload-btn').addEventListener('click', () => {
+      const file = fileInput.files[0];
+      const descriptionText = description.value.trim();
+      const stateName = stateNameInput.value.trim();
+
+      if (!file || !stateName) {
+        alert("Please select a file and enter state name.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file); // 'file' matches upload.single('file')
+      formData.append('description', descriptionText);
+      formData.append('stateName', stateName);
+
+      fetch('/api/upload', { // <-- matches backend route you’ll set up
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert("Upload successful!");
+        fileInput.value = "";
+        description.value = "";
+        stateNameInput.value = "";
+        uploadText.textContent = "Click to upload or drag & drop";
+      })
+      .catch(error => {
+        console.error("Upload failed:", error);
+        alert("Something went wrong during upload.");
+      });
+    });
+
+    document.querySelector('.cancel-btn').addEventListener('click', () => {
+      fileInput.value = "";
+      description.value = "";
+      stateNameInput.value = "";
+      uploadText.textContent = "Click to upload or drag & drop";
+    });
+  </script>
+</body>
+</html>
